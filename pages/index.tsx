@@ -2,7 +2,7 @@ import type { GetStaticProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import { notionClient } from "services/notionClient";
+import { recipesClient } from "services/recipesClient";
 import type { PartialRecipe } from "types";
 
 type HomeProps = {
@@ -44,24 +44,7 @@ export default function Home({ recipes }: HomeProps) {
 }
 
 export const getStaticProps: GetStaticProps<HomeProps> = async () => {
-  let recipes: PartialRecipe[] = [];
-
-  try {
-    const response = await notionClient.blocks.children.list({
-      block_id: process.env.PAGE_ID,
-    });
-
-    response.results.forEach((block) => {
-      if ("child_page" in block) {
-        recipes.push({ title: block.child_page.title, id: block.id });
-      }
-    });
-  } catch (error: unknown) {
-    console.error(
-      "Something went wrong fetching the list of recipes titles",
-      error
-    );
-  }
+  const recipes = await recipesClient.getPartialRecipes();
 
   return {
     props: {
