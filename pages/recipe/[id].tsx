@@ -1,6 +1,14 @@
+import {
+  Box,
+  Heading,
+  ListItem,
+  OrderedList,
+  UnorderedList,
+} from "@chakra-ui/react";
 import type { GetStaticPaths, GetStaticProps } from "next";
 import { recipesClient } from "services/recipesClient";
 import type { DeepPartial, PartialRecipe, RecipeContent } from "types";
+import { Footer } from "components/footer";
 
 type RecipeProps = {
   recipe: RecipeContent & PartialRecipe;
@@ -9,23 +17,34 @@ type RecipeProps = {
 export default function Recipe({ recipe }: RecipeProps) {
   return (
     <>
-      <h1>Recipe Details - {recipe.title}</h1>
-      <section>
-        <h2>Ingredients</h2>
-        <ul>
-          {recipe.ingredients.map((ingredient) => (
-            <li key={ingredient}>{ingredient}</li>
-          ))}
-        </ul>
-      </section>
-      <section>
-        <h2>Preparation</h2>
-        <ul>
-          {recipe.preparationSteps.map((step) => (
-            <li key={step}>{step}</li>
-          ))}
-        </ul>
-      </section>
+      <Box as="header" boxShadow="lg" padding="4">
+        <Heading as="h1" size="4xl" title={recipe.title}>
+          {recipe.title}
+        </Heading>
+      </Box>
+      <Box as="main" mt="16" mb="28">
+        <Box as="section" mb="5">
+          <Heading as="h2" mb="4">
+            Ingredients
+          </Heading>
+          <UnorderedList spacing="2">
+            {recipe.ingredients.map((ingredient) => (
+              <ListItem key={ingredient}>{ingredient}</ListItem>
+            ))}
+          </UnorderedList>
+        </Box>
+        <Box as="section">
+          <Heading as="h2" mb="4">
+            Preparation
+          </Heading>
+          <OrderedList spacing="2">
+            {recipe.preparationSteps.map((step) => (
+              <ListItem key={step}>{step}</ListItem>
+            ))}
+          </OrderedList>
+        </Box>
+      </Box>
+      <Footer />
     </>
   );
 }
