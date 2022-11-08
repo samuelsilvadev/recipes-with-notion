@@ -45,5 +45,6 @@ export const getStaticProps: GetStaticProps<HomeProps> = async () => {
     props: {
       recipes,
     },
+    revalidate: 60,
   };
 };

@@ -82,5 +82,6 @@ export const getStaticProps: GetStaticProps<
         ...recipeContent,
       },
     },
+    revalidate: 60,
   };
 };
